@@ -1,28 +1,39 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
 import './App.css';
+import Tasks from './app/features/Tasks';
+
+
 
 class App extends Component {
+  onCreateTask = ({ title, description }) => {
+    this.props.dispatch({
+      type: 'CREATE_TASK',
+      payload: {
+        title,
+        description
+      }
+    });
+  }
+
+
   render() {
+    console.log('props from App: ', this.props)
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="main-content">
+        <Tasks
+          tasks={this.props.tasks}
+          onCreateTask={this.onCreateTask} />
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    tasks: state.tasks
+  }
+}
+
+
+export default connect(mapStateToProps)(App);
