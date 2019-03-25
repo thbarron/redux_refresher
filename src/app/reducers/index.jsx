@@ -17,10 +17,29 @@ const mockTasks = [
 
 
 export default function tasks(state = { tasks: mockTasks }, action) {
-    if (action.type === 'CREATE_TASK') {
-        return { tasks: state.tasks.concat(action.payload) };
+    switch (action.type) {
+
+        case action.type === 'CREATE_TASK':
+            return { tasks: state.tasks.concat(action.payload) };
+
+        case action.type === 'UPDATE_TASK':
+            return state.tasks.map(item => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        title: action.payload.title,
+                        description: action.payload.description,
+                        status: action.payload.status
+                    }
+                }
+                return item;
+            })
+
+        case action.type === 'DELETE_TASK':
+            return state.tasks.filter(item => item.id !== action.payload.id);
+
+        default:
+            return state;
+
     }
-
-
-    return state;
 }
