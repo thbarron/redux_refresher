@@ -25,12 +25,7 @@ export default function tasks(state = { tasks: mockTasks }, action) {
         case action.type === 'UPDATE_TASK':
             return state.tasks.map(item => {
                 if (item.id === action.payload.id) {
-                    return {
-                        ...item,
-                        title: action.payload.title,
-                        description: action.payload.description,
-                        status: action.payload.status
-                    }
+                    return Object.assign({}, item, action.payload)
                 }
                 return item;
             })
